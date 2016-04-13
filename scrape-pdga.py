@@ -245,21 +245,21 @@ def getRandomSleepTime():
 	return random.randrange(fetchDelayIntervalMinSeconds, fetchDelayIntervalMaxSeconds)
 
 def scrapeResultsFromEventNumberSet(eventIds):
-	print "Expected duration: " + str(500.0 * (fetchDelayIntervalMaxSeconds + fetchDelayIntervalMinSeconds)*0.5 / 60 / 60) + " hours."
 	for eventId in eventIds:
 		print "Fetching results for event " + str(eventId) + "..."
 		scrapeResultsFromEventNumber(eventId)
 		sleepTime = getRandomSleepTime()
-		print "Succeeded.  Sleeping for " + str(sleepTime) + " seconds."
+		print "Sleeping for " + str(sleepTime) + " seconds."
 		time.sleep(sleepTime)
 
 
 ###############################################################################
 
+startId = 8438
+stopId = 8485
 
-# scrapeResultsFromEventNumber(19581)
-
-scrapeResultsFromEventNumberSet(range(392, 10000))
+print "Expected duration: " + str((stopId - startId) * (fetchDelayIntervalMaxSeconds + fetchDelayIntervalMinSeconds)*0.5 / 60 / 60) + " hours."
+scrapeResultsFromEventNumberSet(range(startId, stopId))
 
 database.commit()
 cursor.close()
@@ -268,5 +268,52 @@ database.close()
 # 4-11-16  First scrape attempt
 #	Using Toronto proxy.  5-15 sec delay.  Event range 1-391
 
-# 4-11-16  First scrape attempt (to run over night)
-# 	Using Toronto proxy.  5-15 sec delay.  392-10000
+# 4-11-16  Second scrape attempt (to run over night)
+# 	Using Toronto proxy.  5-15 sec delay.  392-4158
+
+# 4-11-17
+# 	Using Toronto proxy.  5-15 sec delay.  4159-4232
+
+# 4-11-17
+# 	Using Texas proxy + prod VPN.  5-15 sec delay.  4233-4539
+
+# 4-11-17
+# 	Using Texas proxy + prod VPN.  5-15 sec delay.  4540-5091
+
+# 4-11-17
+# 	Using Texas proxy + prod VPN.  5-15 sec delay.  5092, 5316
+
+# 4-11-17
+# 	Using Texas proxy + prod VPN.  5-15 sec delay.  5317, 7333
+
+# 4-11-17
+# 	Using Texas proxy + prod VPN.  5-15 sec delay.  7334, 7564
+
+# 4-11-17
+# 	Using Texas proxy + prod VPN.  5-15 sec delay.  7565, 8437
+
+# 4-11-17
+# 	At The Laughing Goat.  5-15 sec delay.  8438, 8749
+
+############ MISTAKE #####################################################
+# 4-11-17
+# 	Using Texas proxy + prod VPN.  5-15 sec delay.  8438, 8485
+
+# delete all entries from this time range using SQL directly
+# DELETE FROM pdga.tournament_results
+# 	WHERE
+# 		event_id >= 8438
+# 	AND
+# 		event_id <= 8485
+# ;
+# DELETE FROM pdga.rounds
+# 	WHERE
+# 		event_id >= 8438
+# 	AND
+# 		event_id <= 8485
+# ;
+
+# Now fill back int he hole we left:
+# 4-11-16  Second scrape attempt (to run over night)
+# 	Using Toronto proxy.  5-15 sec delay.  8438, 8485
+
